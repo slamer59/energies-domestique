@@ -7,6 +7,7 @@ eval "$(ssh-agent -s)"
 
 ######## Run notebook/word converter ########
 # word converter using pandoc
+# pip install "holoviews[recommended]" pandas panel hvplot
 /fastpages/word2post.sh
 # notebook converter using nbdev
 cp /fastpages/settings.ini .
