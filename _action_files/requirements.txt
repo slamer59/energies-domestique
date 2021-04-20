@@ -6,3 +6,4 @@ pandas
 panel
 hvplot
 plotly
+papermill
