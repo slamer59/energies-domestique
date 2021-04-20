@@ -5,3 +5,5 @@ holoviews[recommended]
 pandas
 panel
 hvplot
+plotly
+papermill
