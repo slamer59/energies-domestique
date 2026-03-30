@@ -40,4 +40,5 @@ end
 gem "wdm", "~> 0.2.0", :install_if => Gem.win_platform?
 
 gem "faraday", "< 2.14.2"
+gem "minitest", ">= 5.15.0"
 
