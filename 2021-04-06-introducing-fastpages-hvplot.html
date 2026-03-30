@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introducing fastpages with hvplot – Énergies Domestique</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-be3771519f21acc1c5b6733774c6dcd8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Énergies Domestique</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./tags.html"> 
+<span class="menu-text">Tags</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#code-folding" id="toc-code-folding" class="nav-link active" data-scroll-target="#code-folding">Code Folding</a></li>
+  <li><a href="#hover-hvplot" id="toc-hover-hvplot" class="nav-link" data-scroll-target="#hover-hvplot">Hover hvplot</a></li>
+  <li><a href="#interactive-charts-with-hvplot" id="toc-interactive-charts-with-hvplot" class="nav-link" data-scroll-target="#interactive-charts-with-hvplot">Interactive Charts With Hvplot</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Introducing fastpages with hvplot</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<blockquote class="blockquote">
+<p>An easy to use blogging platform with extra features for <a href="https://jupyter.org/">Jupyter Notebooks</a>.</p>
+</blockquote>
+<ul>
+<li>toc: true</li>
+<li>badges: true</li>
+<li>comments: false</li>
+<li>sticky_rank: 1</li>
+<li>author: Thomas PEdot</li>
+<li>categories: [fastpages, jupyter, bokeh, hvplot]</li>
+</ul>
+<section id="code-folding" class="level3">
+<h3 class="anchored" data-anchor-id="code-folding">Code Folding</h3>
+<p>put a <code>#collapse-hide</code> flag at the top of any cell if you want to <strong>hide</strong> that cell by default, but give the reader the option to show it:</p>
+<div id="cell-4" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#collapse-hide</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> hvplot.pandas  <span class="co"># noqa</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> snippets <span class="im">import</span> <span class="op">*</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>put a <code>#collapse-show</code> flag at the top of any cell if you want to <strong>show</strong> that cell by default, but give the reader the option to hide it:</p>
+<div id="cell-6" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#collapse-show</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> bokeh.sampledata.sprint <span class="im">import</span> sprint <span class="im">as</span> df</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>df.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe caption-top table table-sm table-striped small" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">Name</th>
+<th data-quarto-table-cell-role="th">Country</th>
+<th data-quarto-table-cell-role="th">Medal</th>
+<th data-quarto-table-cell-role="th">Time</th>
+<th data-quarto-table-cell-role="th">Year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>Usain Bolt</td>
+<td>JAM</td>
+<td>GOLD</td>
+<td>9.63</td>
+<td>2012</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>Yohan Blake</td>
+<td>JAM</td>
+<td>SILVER</td>
+<td>9.75</td>
+<td>2012</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>Justin Gatlin</td>
+<td>USA</td>
+<td>BRONZE</td>
+<td>9.79</td>
+<td>2012</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>Usain Bolt</td>
+<td>JAM</td>
+<td>GOLD</td>
+<td>9.69</td>
+<td>2008</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>Richard Thompson</td>
+<td>TRI</td>
+<td>SILVER</td>
+<td>9.89</td>
+<td>2008</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>If you want to completely hide cells (not just collapse them), <a href="https://github.com/fastai/fastpages#hide-inputoutput-cells">read these instructions</a>.</p>
+<div id="cell-8" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># hide</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&nbsp;https://hvplot.holoviz.org/user_guide/Viewing.html</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>boxplot <span class="op">=</span> df.hvplot.box(y<span class="op">=</span><span class="st">'Time'</span>, by<span class="op">=</span><span class="st">'Medal'</span>, height<span class="op">=</span><span class="dv">600</span>, width<span class="op">=</span><span class="dv">500</span>, legend<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>boxplot</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div id="1002">
+
+
+
+
+
+  <div class="bk-root" id="62eaf43e-b694-4cc5-9f24-a9bda4e40f4b" data-root-id="1002"></div>
+</div>
+<script type="application/javascript">(function(root) {
+  function embed_document(root) {
+    var docs_json = {"d5cc874c-8c63-43d3-8c4c-37a31d291770":{"defs":[],"roots":{"references":[{"attributes":{"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"1050","type":"Segment"},{"attributes":{"data_source":{"id":"1076"},"glyph":{"id":"1078"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1079"},"selection_glyph":{"id":"1082"},"view":{"id":"1081"}},"id":"1080","type":"GlyphRenderer"},{"attributes":{},"id":"1023","type":"PanTool"},{"attributes":{"axis":{"id":"1018"},"dimension":1,"grid_line_color":null,"ticker":null},"id":"1021","type":"Grid"},{"attributes":{"margin":[5,5,5,5],"name":"HSpacer01627","sizing_mode":"stretch_width"},"id":"1133","type":"Spacer"},{"attributes":{"axis_label":"Time","formatter":{"id":"1086"},"major_label_policy":{"id":"1088"},"ticker":{"id":"1019"}},"id":"1018","type":"LinearAxis"},{"attributes":{"fill_color":{"value":"black"},"x":{"field":"index"},"y":{"field":"Time"}},"id":"1036","type":"Circle"},{"attributes":{},"id":"1019","type":"BasicTicker"},{"attributes":{},"id":"1024","type":"WheelZoomTool"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"black"},"line_alpha":{"value":0.1},"x":{"field":"index"},"y":{"field":"Time"}},"id":"1037","type":"Circle"},{"attributes":{},"id":"1099","type":"UnionRenderers"},{"attributes":{"source":{"id":"1055"}},"id":"1060","type":"CDSView"},{"attributes":{"source":{"id":"1069"}},"id":"1074","type":"CDSView"},{"attributes":{},"id":"1022","type":"SaveTool"},{"attributes":{"overlay":{"id":"1027"}},"id":"1025","type":"BoxZoomTool"},{"attributes":{"data_source":{"id":"1034"},"glyph":{"id":"1036"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1037"},"selection_glyph":{"id":"1040"},"view":{"id":"1039"}},"id":"1038","type":"GlyphRenderer"},{"attributes":{},"id":"1026","type":"ResetTool"},{"attributes":{"active_multi":null,"tools":[{"id":"1022"},{"id":"1023"},{"id":"1024"},{"id":"1025"},{"id":"1026"}]},"id":"1028","type":"Toolbar"},{"attributes":{"data_source":{"id":"1055"},"glyph":{"id":"1057"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1058"},"selection_glyph":{"id":"1061"},"view":{"id":"1060"}},"id":"1059","type":"GlyphRenderer"},{"attributes":{"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"1047","type":"Segment"},{"attributes":{},"id":"1100","type":"Selection"},{"attributes":{"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"1061","type":"Segment"},{"attributes":{"source":{"id":"1062"}},"id":"1067","type":"CDSView"},{"attributes":{"angle":{"value":0.0},"fill_alpha":{"value":1.0},"fill_color":{"value":"black"},"hatch_alpha":{"value":1.0},"hatch_color":{"value":"black"},"hatch_scale":{"value":12.0},"hatch_weight":{"value":1.0},"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"size":{"value":4},"x":{"field":"index"},"y":{"field":"Time"}},"id":"1040","type":"Circle"},{"attributes":{"data_source":{"id":"1041"},"glyph":{"id":"1043"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1044"},"selection_glyph":{"id":"1047"},"view":{"id":"1046"}},"id":"1045","type":"GlyphRenderer"},{"attributes":{},"id":"1101","type":"UnionRenderers"},{"attributes":{"data":{"bottom":{"__ndarray__":"mpmZmZmZJUDNzMzMzMwlQM3MzMzMzCVA","dtype":"float64","order":"little","shape":[3]},"index":["GOLD","SILVER","BRONZE"],"top":{"__ndarray__":"zczMzMyMJEDNzMzMzIwkQM3MzMzMzCRA","dtype":"float64","order":"little","shape":[3]}},"selected":{"id":"1106"},"selection_policy":{"id":"1107"}},"id":"1069","type":"ColumnDataSource"},{"attributes":{"bottom_units":"screen","fill_alpha":0.5,"fill_color":"lightgrey","left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"1027","type":"BoxAnnotation"},{"attributes":{},"id":"1083","type":"CategoricalTickFormatter"},{"attributes":{"margin":[5,5,5,5],"name":"HSpacer01626","sizing_mode":"stretch_width"},"id":"1003","type":"Spacer"},{"attributes":{},"id":"1102","type":"Selection"},{"attributes":{},"id":"1086","type":"BasicTickFormatter"},{"attributes":{},"id":"1103","type":"UnionRenderers"},{"attributes":{"children":[{"id":"1003"},{"id":"1006"},{"id":"1133"}],"margin":[0,0,0,0],"name":"Row01622","tags":["embedded"]},"id":"1002","type":"Row"},{"attributes":{"source":{"id":"1034"}},"id":"1039","type":"CDSView"},{"attributes":{"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"1068","type":"Segment"},{"attributes":{},"id":"1088","type":"AllLabels"},{"attributes":{},"id":"1104","type":"Selection"},{"attributes":{},"id":"1105","type":"UnionRenderers"},{"attributes":{"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"1057","type":"Segment"},{"attributes":{"line_alpha":{"value":0.1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"1058","type":"Segment"},{"attributes":{"bottom":{"field":"bottom"},"fill_alpha":{"value":1.0},"fill_color":{"value":"#30a2da"},"hatch_alpha":{"value":1.0},"hatch_color":{"value":"black"},"hatch_scale":{"value":12.0},"hatch_weight":{"value":1.0},"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"top":{"field":"top"},"width":{"value":0.7},"x":{"field":"index"}},"id":"1075","type":"VBar"},{"attributes":{"data":{"x0":["GOLD","SILVER","BRONZE"],"x1":["GOLD","SILVER","BRONZE"],"y0":{"__ndarray__":"AAAAAAAAKECamZmZmZkmQJqZmZmZmSZA","dtype":"float64","order":"little","shape":[3]},"y1":{"__ndarray__":"mpmZmZmZJUDNzMzMzMwlQM3MzMzMzCVA","dtype":"float64","order":"little","shape":[3]}},"selected":{"id":"1098"},"selection_policy":{"id":"1099"}},"id":"1041","type":"ColumnDataSource"},{"attributes":{"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"1043","type":"Segment"},{"attributes":{},"id":"1106","type":"Selection"},{"attributes":{},"id":"1098","type":"Selection"},{"attributes":{},"id":"1107","type":"UnionRenderers"},{"attributes":{"bottom":{"field":"bottom"},"fill_alpha":{"value":1.0},"fill_color":{"value":"#30a2da"},"hatch_alpha":{"value":1.0},"hatch_color":{"value":"black"},"hatch_scale":{"value":12.0},"hatch_weight":{"value":1.0},"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"top":{"field":"top"},"width":{"value":0.7},"x":{"field":"index"}},"id":"1082","type":"VBar"},{"attributes":{},"id":"1085","type":"AllLabels"},{"attributes":{"axis_label":"Medal","formatter":{"id":"1083"},"major_label_policy":{"id":"1085"},"ticker":{"id":"1016"}},"id":"1015","type":"CategoricalAxis"},{"attributes":{"data":{"Time":{"__ndarray__":"ZmZmZmZmKEAzMzMzMzMpQDMzMzMzMylA","dtype":"float64","order":"little","shape":[3]},"index":["SILVER","BRONZE","BRONZE"]},"selected":{"id":"1096"},"selection_policy":{"id":"1097"}},"id":"1034","type":"ColumnDataSource"},{"attributes":{"bottom":{"field":"bottom"},"fill_color":{"value":"#30a2da"},"top":{"field":"top"},"width":{"value":0.7},"x":{"field":"index"}},"id":"1071","type":"VBar"},{"attributes":{"bottom":{"field":"bottom"},"fill_color":{"value":"#30a2da"},"top":{"field":"top"},"width":{"value":0.7},"x":{"field":"index"}},"id":"1078","type":"VBar"},{"attributes":{"source":{"id":"1041"}},"id":"1046","type":"CDSView"},{"attributes":{"line_alpha":{"value":0.1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"1051","type":"Segment"},{"attributes":{"data_source":{"id":"1062"},"glyph":{"id":"1064"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1065"},"selection_glyph":{"id":"1068"},"view":{"id":"1067"}},"id":"1066","type":"GlyphRenderer"},{"attributes":{"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"1064","type":"Segment"},{"attributes":{"source":{"id":"1048"}},"id":"1053","type":"CDSView"},{"attributes":{"line_alpha":{"value":0.1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"1065","type":"Segment"},{"attributes":{"axis":{"id":"1015"},"grid_line_color":null,"ticker":null},"id":"1017","type":"Grid"},{"attributes":{"data":{"x0":[["GOLD",-0.2],["SILVER",-0.2],["BRONZE",-0.2]],"x1":[["GOLD",0.2],["SILVER",0.2],["BRONZE",0.2]],"y0":[12.0,11.3,11.3],"y1":[12.0,11.3,11.3]},"selected":{"id":"1104"},"selection_policy":{"id":"1105"}},"id":"1062","type":"ColumnDataSource"},{"attributes":{},"id":"1108","type":"Selection"},{"attributes":{},"id":"1016","type":"CategoricalTicker"},{"attributes":{},"id":"1109","type":"UnionRenderers"},{"attributes":{"below":[{"id":"1015"}],"center":[{"id":"1017"},{"id":"1021"}],"left":[{"id":"1018"}],"margin":[5,5,5,5],"min_border_bottom":10,"min_border_left":10,"min_border_right":10,"min_border_top":10,"renderers":[{"id":"1038"},{"id":"1045"},{"id":"1052"},{"id":"1059"},{"id":"1066"},{"id":"1073"},{"id":"1080"}],"sizing_mode":"fixed","title":{"id":"1007"},"toolbar":{"id":"1028"},"width":500,"x_range":{"id":"1004"},"x_scale":{"id":"1011"},"y_range":{"id":"1005"},"y_scale":{"id":"1013"}},"id":"1006","subtype":"Figure","type":"Plot"},{"attributes":{"data_source":{"id":"1048"},"glyph":{"id":"1050"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1051"},"selection_glyph":{"id":"1054"},"view":{"id":"1053"}},"id":"1052","type":"GlyphRenderer"},{"attributes":{"text_color":"black","text_font_size":"12pt"},"id":"1007","type":"Title"},{"attributes":{"bottom":{"field":"bottom"},"fill_alpha":{"value":0.1},"fill_color":{"value":"#30a2da"},"line_alpha":{"value":0.1},"top":{"field":"top"},"width":{"value":0.7},"x":{"field":"index"}},"id":"1079","type":"VBar"},{"attributes":{"line_alpha":{"value":0.1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"1044","type":"Segment"},{"attributes":{"bottom":{"field":"bottom"},"fill_alpha":{"value":0.1},"fill_color":{"value":"#30a2da"},"line_alpha":{"value":0.1},"top":{"field":"top"},"width":{"value":0.7},"x":{"field":"index"}},"id":"1072","type":"VBar"},{"attributes":{"factors":["GOLD","SILVER","BRONZE"],"tags":[[["Medal","Medal",null]]]},"id":"1004","type":"FactorRange"},{"attributes":{},"id":"1096","type":"Selection"},{"attributes":{},"id":"1013","type":"LinearScale"},{"attributes":{"data":{"x0":["GOLD","SILVER","BRONZE"],"x1":["GOLD","SILVER","BRONZE"],"y0":{"__ndarray__":"w/UoXI9CI0AAAAAAAIAjQBSuR+F6lCNA","dtype":"float64","order":"little","shape":[3]},"y1":{"__ndarray__":"CtejcD3qI0BSuB6F6xEkQKRwPQrXIyRA","dtype":"float64","order":"little","shape":[3]}},"selected":{"id":"1100"},"selection_policy":{"id":"1101"}},"id":"1048","type":"ColumnDataSource"},{"attributes":{},"id":"1011","type":"CategoricalScale"},{"attributes":{"data":{"x0":[["GOLD",-0.2],["SILVER",-0.2],["BRONZE",-0.2]],"x1":[["GOLD",0.2],["SILVER",0.2],["BRONZE",0.2]],"y0":[9.63,9.75,9.79],"y1":[9.63,9.75,9.79]},"selected":{"id":"1102"},"selection_policy":{"id":"1103"}},"id":"1055","type":"ColumnDataSource"},{"attributes":{"data_source":{"id":"1069"},"glyph":{"id":"1071"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"1072"},"selection_glyph":{"id":"1075"},"view":{"id":"1074"}},"id":"1073","type":"GlyphRenderer"},{"attributes":{"end":12.8475,"reset_end":12.8475,"reset_start":9.3825,"start":9.3825,"tags":[[["Time","Time",null]]]},"id":"1005","type":"Range1d"},{"attributes":{"data":{"bottom":{"__ndarray__":"zczMzMyMJEDNzMzMzIwkQM3MzMzMzCRA","dtype":"float64","order":"little","shape":[3]},"index":["GOLD","SILVER","BRONZE"],"top":{"__ndarray__":"CtejcD3qI0BSuB6F6xEkQKRwPQrXIyRA","dtype":"float64","order":"little","shape":[3]}},"selected":{"id":"1108"},"selection_policy":{"id":"1109"}},"id":"1076","type":"ColumnDataSource"},{"attributes":{"source":{"id":"1076"}},"id":"1081","type":"CDSView"},{"attributes":{},"id":"1097","type":"UnionRenderers"},{"attributes":{"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"1054","type":"Segment"}],"root_ids":["1002"]},"title":"Bokeh Application","version":"2.3.1"}};
+    var render_items = [{"docid":"d5cc874c-8c63-43d3-8c4c-37a31d291770","root_ids":["1002"],"roots":{"1002":"62eaf43e-b694-4cc5-9f24-a9bda4e40f4b"}}];
+    root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else if (document.readyState == "complete") {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);</script>
+</div>
+</div>
+<div id="cell-9" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>export_plot_fastpages(boxplot, <span class="st">'../_includes/test.html'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>{% include test.html %}</p>
+</section>
+<section id="hover-hvplot" class="level3">
+<h3 class="anchored" data-anchor-id="hover-hvplot">Hover hvplot</h3>
+<div id="cell-12" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>hvplot_hover <span class="op">=</span> boxplot <span class="op">*</span> df.hvplot.scatter(y<span class="op">=</span><span class="st">'Time'</span>, x<span class="op">=</span><span class="st">'Medal'</span>, c<span class="op">=</span><span class="st">'orange'</span>).opts(jitter<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># hvplot.save(hvplot_hover, '../_includes/hvplot_hover.html')</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>hvplot_hover</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-display" data-execution_count="11">
+<div id="2557">
+
+
+
+
+
+  <div class="bk-root" id="96292846-8cee-4f63-96c0-028c503b721b" data-root-id="2557"></div>
+</div>
+<script type="application/javascript">(function(root) {
+  function embed_document(root) {
+    var docs_json = {"80997ca4-39d0-4d58-a588-f2f7492dcb52":{"defs":[],"roots":{"references":[{"attributes":{},"id":"2675","type":"Selection"},{"attributes":{},"id":"2575","type":"BasicTicker"},{"attributes":{},"id":"2676","type":"UnionRenderers"},{"attributes":{"data":{"x0":["GOLD","SILVER","BRONZE"],"x1":["GOLD","SILVER","BRONZE"],"y0":{"__ndarray__":"AAAAAAAAKECamZmZmZkmQJqZmZmZmSZA","dtype":"float64","order":"little","shape":[3]},"y1":{"__ndarray__":"mpmZmZmZJUDNzMzMzMwlQM3MzMzMzCVA","dtype":"float64","order":"little","shape":[3]}},"selected":{"id":"2665"},"selection_policy":{"id":"2666"}},"id":"2604","type":"ColumnDataSource"},{"attributes":{"fill_color":{"value":"orange"},"line_color":{"value":"orange"},"size":{"value":5.477225575051661},"x":{"field":"Medal","transform":{"id":"2646"}},"y":{"field":"Time"}},"id":"2650","type":"Scatter"},{"attributes":{},"id":"2569","type":"LinearScale"},{"attributes":{"text_color":"black","text_font_size":"12pt"},"id":"2563","type":"Title"},{"attributes":{"overlay":{"id":"2583"}},"id":"2581","type":"BoxZoomTool"},{"attributes":{"bottom_units":"screen","fill_alpha":0.5,"fill_color":"lightgrey","left_units":"screen","level":"overlay","line_alpha":1.0,"line_color":"black","line_dash":[4,4],"line_width":2,"right_units":"screen","syncable":false,"top_units":"screen"},"id":"2583","type":"BoxAnnotation"},{"attributes":{},"id":"2593","type":"AllLabels"},{"attributes":{"fill_alpha":{"value":0.2},"fill_color":{"value":"orange"},"line_alpha":{"value":0.2},"line_color":{"value":"orange"},"size":{"value":5.477225575051661},"x":{"field":"Medal","transform":{"id":"2646"}},"y":{"field":"Time"}},"id":"2652","type":"Scatter"},{"attributes":{},"id":"2663","type":"Selection"},{"attributes":{"data_source":{"id":"2647"},"glyph":{"id":"2650"},"hover_glyph":null,"muted_glyph":{"id":"2652"},"nonselection_glyph":{"id":"2651"},"selection_glyph":{"id":"2655"},"view":{"id":"2654"}},"id":"2653","type":"GlyphRenderer"},{"attributes":{"source":{"id":"2597"}},"id":"2602","type":"CDSView"},{"attributes":{"angle":{"value":0.0},"fill_alpha":{"value":1.0},"fill_color":{"value":"orange"},"hatch_alpha":{"value":1.0},"hatch_color":{"value":"black"},"hatch_scale":{"value":12.0},"hatch_weight":{"value":1.0},"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"orange"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"marker":{"value":"circle"},"size":{"value":5.477225575051661},"x":{"field":"Medal","transform":{"id":"2646"}},"y":{"field":"Time"}},"id":"2655","type":"Scatter"},{"attributes":{"range":{"id":"2559"},"width":0.5},"id":"2646","type":"Jitter"},{"attributes":{"margin":[5,5,5,5],"name":"HSpacer04173","sizing_mode":"stretch_width"},"id":"2872","type":"Spacer"},{"attributes":{},"id":"2664","type":"UnionRenderers"},{"attributes":{},"id":"2678","type":"UnionRenderers"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"orange"},"line_alpha":{"value":0.1},"line_color":{"value":"orange"},"size":{"value":5.477225575051661},"x":{"field":"Medal","transform":{"id":"2646"}},"y":{"field":"Time"}},"id":"2651","type":"Scatter"},{"attributes":{"factors":["GOLD","SILVER","BRONZE"],"tags":[[["Medal","Medal",null]]]},"id":"2559","type":"FactorRange"},{"attributes":{},"id":"2594","type":"BasicTickFormatter"},{"attributes":{},"id":"2580","type":"WheelZoomTool"},{"attributes":{"axis":{"id":"2571"},"grid_line_color":null,"ticker":null},"id":"2573","type":"Grid"},{"attributes":{"source":{"id":"2639"}},"id":"2644","type":"CDSView"},{"attributes":{"bottom":{"field":"bottom"},"fill_color":{"value":"#30a2da"},"top":{"field":"top"},"width":{"value":0.7},"x":{"field":"index"}},"id":"2641","type":"VBar"},{"attributes":{},"id":"2665","type":"Selection"},{"attributes":{},"id":"2648","type":"Selection"},{"attributes":{"margin":[5,5,5,5],"name":"HSpacer04172","sizing_mode":"stretch_width"},"id":"2558","type":"Spacer"},{"attributes":{"data_source":{"id":"2604"},"glyph":{"id":"2606"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"2607"},"selection_glyph":{"id":"2610"},"view":{"id":"2609"}},"id":"2608","type":"GlyphRenderer"},{"attributes":{},"id":"2666","type":"UnionRenderers"},{"attributes":{},"id":"2578","type":"SaveTool"},{"attributes":{"source":{"id":"2647"}},"id":"2654","type":"CDSView"},{"attributes":{"axis_label":"Medal","formatter":{"id":"2591"},"major_label_policy":{"id":"2593"},"ticker":{"id":"2572"}},"id":"2571","type":"CategoricalAxis"},{"attributes":{"line_alpha":{"value":0.1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"2628","type":"Segment"},{"attributes":{"data":{"bottom":{"__ndarray__":"mpmZmZmZJUDNzMzMzMwlQM3MzMzMzCVA","dtype":"float64","order":"little","shape":[3]},"index":["GOLD","SILVER","BRONZE"],"top":{"__ndarray__":"zczMzMyMJEDNzMzMzIwkQM3MzMzMzCRA","dtype":"float64","order":"little","shape":[3]}},"selected":{"id":"2673"},"selection_policy":{"id":"2674"}},"id":"2632","type":"ColumnDataSource"},{"attributes":{},"id":"2596","type":"AllLabels"},{"attributes":{"end":12.8475,"reset_end":12.8475,"reset_start":9.3825,"start":9.3825,"tags":[[["Time","Time",null]]]},"id":"2560","type":"Range1d"},{"attributes":{},"id":"2572","type":"CategoricalTicker"},{"attributes":{"source":{"id":"2625"}},"id":"2630","type":"CDSView"},{"attributes":{"axis_label":"Time","formatter":{"id":"2594"},"major_label_policy":{"id":"2596"},"ticker":{"id":"2575"}},"id":"2574","type":"LinearAxis"},{"attributes":{"data":{"Time":{"__ndarray__":"ZmZmZmZmKEAzMzMzMzMpQDMzMzMzMylA","dtype":"float64","order":"little","shape":[3]},"index":["SILVER","BRONZE","BRONZE"]},"selected":{"id":"2663"},"selection_policy":{"id":"2664"}},"id":"2597","type":"ColumnDataSource"},{"attributes":{"bottom":{"field":"bottom"},"fill_alpha":{"value":0.1},"fill_color":{"value":"#30a2da"},"line_alpha":{"value":0.1},"top":{"field":"top"},"width":{"value":0.7},"x":{"field":"index"}},"id":"2635","type":"VBar"},{"attributes":{"data_source":{"id":"2611"},"glyph":{"id":"2613"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"2614"},"selection_glyph":{"id":"2617"},"view":{"id":"2616"}},"id":"2615","type":"GlyphRenderer"},{"attributes":{},"id":"2667","type":"Selection"},{"attributes":{},"id":"2668","type":"UnionRenderers"},{"attributes":{"bottom":{"field":"bottom"},"fill_alpha":{"value":1.0},"fill_color":{"value":"#30a2da"},"hatch_alpha":{"value":1.0},"hatch_color":{"value":"black"},"hatch_scale":{"value":12.0},"hatch_weight":{"value":1.0},"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"top":{"field":"top"},"width":{"value":0.7},"x":{"field":"index"}},"id":"2645","type":"VBar"},{"attributes":{"data":{"x0":[["GOLD",-0.2],["SILVER",-0.2],["BRONZE",-0.2]],"x1":[["GOLD",0.2],["SILVER",0.2],["BRONZE",0.2]],"y0":[9.63,9.75,9.79],"y1":[9.63,9.75,9.79]},"selected":{"id":"2669"},"selection_policy":{"id":"2670"}},"id":"2618","type":"ColumnDataSource"},{"attributes":{"below":[{"id":"2571"}],"center":[{"id":"2573"},{"id":"2577"}],"left":[{"id":"2574"}],"margin":[5,5,5,5],"min_border_bottom":10,"min_border_left":10,"min_border_right":10,"min_border_top":10,"renderers":[{"id":"2601"},{"id":"2608"},{"id":"2615"},{"id":"2622"},{"id":"2629"},{"id":"2636"},{"id":"2643"},{"id":"2653"}],"sizing_mode":"fixed","title":{"id":"2563"},"toolbar":{"id":"2584"},"width":500,"x_range":{"id":"2559"},"x_scale":{"id":"2567"},"y_range":{"id":"2560"},"y_scale":{"id":"2569"}},"id":"2562","subtype":"Figure","type":"Plot"},{"attributes":{"data_source":{"id":"2632"},"glyph":{"id":"2634"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"2635"},"selection_glyph":{"id":"2638"},"view":{"id":"2637"}},"id":"2636","type":"GlyphRenderer"},{"attributes":{"data":{"bottom":{"__ndarray__":"zczMzMyMJEDNzMzMzIwkQM3MzMzMzCRA","dtype":"float64","order":"little","shape":[3]},"index":["GOLD","SILVER","BRONZE"],"top":{"__ndarray__":"CtejcD3qI0BSuB6F6xEkQKRwPQrXIyRA","dtype":"float64","order":"little","shape":[3]}},"selected":{"id":"2675"},"selection_policy":{"id":"2676"}},"id":"2639","type":"ColumnDataSource"},{"attributes":{"bottom":{"field":"bottom"},"fill_alpha":{"value":1.0},"fill_color":{"value":"#30a2da"},"hatch_alpha":{"value":1.0},"hatch_color":{"value":"black"},"hatch_scale":{"value":12.0},"hatch_weight":{"value":1.0},"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"top":{"field":"top"},"width":{"value":0.7},"x":{"field":"index"}},"id":"2638","type":"VBar"},{"attributes":{"children":[{"id":"2558"},{"id":"2562"},{"id":"2872"}],"margin":[0,0,0,0],"name":"Row04168","tags":["embedded"]},"id":"2557","type":"Row"},{"attributes":{},"id":"2669","type":"Selection"},{"attributes":{"data_source":{"id":"2618"},"glyph":{"id":"2620"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"2621"},"selection_glyph":{"id":"2624"},"view":{"id":"2623"}},"id":"2622","type":"GlyphRenderer"},{"attributes":{"data_source":{"id":"2639"},"glyph":{"id":"2641"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"2642"},"selection_glyph":{"id":"2645"},"view":{"id":"2644"}},"id":"2643","type":"GlyphRenderer"},{"attributes":{"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"2613","type":"Segment"},{"attributes":{"source":{"id":"2632"}},"id":"2637","type":"CDSView"},{"attributes":{},"id":"2670","type":"UnionRenderers"},{"attributes":{"fill_color":{"value":"black"},"x":{"field":"index"},"y":{"field":"Time"}},"id":"2599","type":"Circle"},{"attributes":{"line_alpha":{"value":0.1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"2607","type":"Segment"},{"attributes":{"line_alpha":{"value":0.1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"2614","type":"Segment"},{"attributes":{"angle":{"value":0.0},"fill_alpha":{"value":1.0},"fill_color":{"value":"black"},"hatch_alpha":{"value":1.0},"hatch_color":{"value":"black"},"hatch_scale":{"value":12.0},"hatch_weight":{"value":1.0},"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"size":{"value":4},"x":{"field":"index"},"y":{"field":"Time"}},"id":"2603","type":"Circle"},{"attributes":{},"id":"2567","type":"CategoricalScale"},{"attributes":{"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"2620","type":"Segment"},{"attributes":{},"id":"2671","type":"Selection"},{"attributes":{"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"2606","type":"Segment"},{"attributes":{"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"2617","type":"Segment"},{"attributes":{"bottom":{"field":"bottom"},"fill_alpha":{"value":0.1},"fill_color":{"value":"#30a2da"},"line_alpha":{"value":0.1},"top":{"field":"top"},"width":{"value":0.7},"x":{"field":"index"}},"id":"2642","type":"VBar"},{"attributes":{"fill_alpha":{"value":0.1},"fill_color":{"value":"black"},"line_alpha":{"value":0.1},"x":{"field":"index"},"y":{"field":"Time"}},"id":"2600","type":"Circle"},{"attributes":{"source":{"id":"2611"}},"id":"2616","type":"CDSView"},{"attributes":{},"id":"2672","type":"UnionRenderers"},{"attributes":{"axis":{"id":"2574"},"dimension":1,"grid_line_color":null,"ticker":null},"id":"2577","type":"Grid"},{"attributes":{"data":{"Medal":["GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","GOLD","SILVER","BRONZE","BRONZE"],"Time":{"__ndarray__":"w/UoXI9CI0AAAAAAAIAjQBSuR+F6lCNA4XoUrkdhI0BI4XoUrscjQFK4HoXr0SNAMzMzMzOzI0C4HoXrUbgjQD0K16NwvSNAPQrXo3C9I0B7FK5H4fojQBSuR+F6FCRArkfhehSuI0BI4XoUrscjQM3MzMzMzCNA7FG4HoXrI0AK16NwPQokQBSuR+F6FCRA16NwPQrXI0BxPQrXo/AjQHsUrkfh+iNAexSuR+H6I0DhehSuR2EkQHE9CtejcCRAAAAAAACAJEAAAAAAAIAkQEjhehSuxyRAH4XrUbgeJEApXI/C9SgkQEjhehSuRyRASOF6FK5HJEB7FK5H4XokQClcj8L1qCRAZmZmZmbmI0AUrkfhehQkQKRwPQrXIyRAAAAAAAAAJEBmZmZmZmYkQGZmZmZmZiRAZmZmZmZmJEBmZmZmZmYkQJqZmZmZmSRAAAAAAAAAJUAAAAAAAAAlQDMzMzMzMyVAzczMzMzMJEDNzMzMzMwkQM3MzMzMzCRAmpmZmZmZJEDNzMzMzMwkQM3MzMzMzCRAmpmZmZmZJEDNzMzMzMwkQAAAAAAAACVAmpmZmZmZJECamZmZmZkkQM3MzMzMzCRAmpmZmZmZJUDNzMzMzMwlQM3MzMzMzCVAMzMzMzMzJUCamZmZmZklQM3MzMzMzCVAmpmZmZmZJUDNzMzMzMwlQM3MzMzMzCVAmpmZmZmZJUDNzMzMzMwlQM3MzMzMzCVAmpmZmZmZJUAAAAAAAAAmQAAAAAAAACZAZmZmZmZmJkCamZmZmZkmQJqZmZmZmSZAAAAAAAAAJkBmZmZmZmYmQGZmZmZmZiZAAAAAAAAAJkAzMzMzMzMmQGZmZmZmZiZAAAAAAAAAKEBmZmZmZmYoQDMzMzMzMylAMzMzMzMzKUA=","dtype":"float64","order":"little","shape":[85]}},"selected":{"id":"2648"},"selection_policy":{"id":"2678"}},"id":"2647","type":"ColumnDataSource"},{"attributes":{},"id":"2591","type":"CategoricalTickFormatter"},{"attributes":{"data":{"x0":["GOLD","SILVER","BRONZE"],"x1":["GOLD","SILVER","BRONZE"],"y0":{"__ndarray__":"w/UoXI9CI0AAAAAAAIAjQBSuR+F6lCNA","dtype":"float64","order":"little","shape":[3]},"y1":{"__ndarray__":"CtejcD3qI0BSuB6F6xEkQKRwPQrXIyRA","dtype":"float64","order":"little","shape":[3]}},"selected":{"id":"2667"},"selection_policy":{"id":"2668"}},"id":"2611","type":"ColumnDataSource"},{"attributes":{"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"2631","type":"Segment"},{"attributes":{},"id":"2673","type":"Selection"},{"attributes":{"active_multi":null,"tools":[{"id":"2561"},{"id":"2578"},{"id":"2579"},{"id":"2580"},{"id":"2581"},{"id":"2582"}]},"id":"2584","type":"Toolbar"},{"attributes":{"data_source":{"id":"2597"},"glyph":{"id":"2599"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"2600"},"selection_glyph":{"id":"2603"},"view":{"id":"2602"}},"id":"2601","type":"GlyphRenderer"},{"attributes":{"line_alpha":{"value":0.1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"2621","type":"Segment"},{"attributes":{"callback":null,"renderers":[{"id":"2653"}],"tags":["hv_created"],"tooltips":[["Medal","@{Medal}"],["Time","@{Time}"]]},"id":"2561","type":"HoverTool"},{"attributes":{"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"2610","type":"Segment"},{"attributes":{},"id":"2674","type":"UnionRenderers"},{"attributes":{"data":{"x0":[["GOLD",-0.2],["SILVER",-0.2],["BRONZE",-0.2]],"x1":[["GOLD",0.2],["SILVER",0.2],["BRONZE",0.2]],"y0":[12.0,11.3,11.3],"y1":[12.0,11.3,11.3]},"selected":{"id":"2671"},"selection_policy":{"id":"2672"}},"id":"2625","type":"ColumnDataSource"},{"attributes":{"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"2627","type":"Segment"},{"attributes":{"source":{"id":"2604"}},"id":"2609","type":"CDSView"},{"attributes":{},"id":"2582","type":"ResetTool"},{"attributes":{"line_alpha":{"value":1.0},"line_cap":{"value":"butt"},"line_color":{"value":"black"},"line_dash":{"value":[]},"line_dash_offset":{"value":0},"line_join":{"value":"bevel"},"line_width":{"value":1},"x0":{"field":"x0"},"x1":{"field":"x1"},"y0":{"field":"y0"},"y1":{"field":"y1"}},"id":"2624","type":"Segment"},{"attributes":{"bottom":{"field":"bottom"},"fill_color":{"value":"#30a2da"},"top":{"field":"top"},"width":{"value":0.7},"x":{"field":"index"}},"id":"2634","type":"VBar"},{"attributes":{"source":{"id":"2618"}},"id":"2623","type":"CDSView"},{"attributes":{},"id":"2579","type":"PanTool"},{"attributes":{"data_source":{"id":"2625"},"glyph":{"id":"2627"},"hover_glyph":null,"muted_glyph":null,"nonselection_glyph":{"id":"2628"},"selection_glyph":{"id":"2631"},"view":{"id":"2630"}},"id":"2629","type":"GlyphRenderer"}],"root_ids":["2557"]},"title":"Bokeh Application","version":"2.3.1"}};
+    var render_items = [{"docid":"80997ca4-39d0-4d58-a588-f2f7492dcb52","root_ids":["2557"],"roots":{"2557":"96292846-8cee-4f63-96c0-028c503b721b"}}];
+    root.Bokeh.embed.embed_items_notebook(docs_json, render_items);
+  }
+  if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+    embed_document(root);
+  } else {
+    var attempts = 0;
+    var timer = setInterval(function(root) {
+      if (root.Bokeh !== undefined && root.Bokeh.Panel !== undefined) {
+        clearInterval(timer);
+        embed_document(root);
+      } else if (document.readyState == "complete") {
+        attempts++;
+        if (attempts > 100) {
+          clearInterval(timer);
+          console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+        }
+      }
+    }, 10, root)
+  }
+})(window);</script>
+</div>
+</div>
+</section>
+<section id="interactive-charts-with-hvplot" class="level3">
+<h3 class="anchored" data-anchor-id="interactive-charts-with-hvplot">Interactive Charts With Hvplot</h3>
+<div id="cell-15" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>boxinteract <span class="op">=</span> df.hvplot.box(y<span class="op">=</span><span class="st">'Time'</span>, groupby<span class="op">=</span><span class="st">'Medal'</span>, by<span class="op">=</span><span class="st">'Country'</span>, ylabel<span class="op">=</span><span class="st">'Sprint Time'</span>, height<span class="op">=</span><span class="dv">400</span>, width<span class="op">=</span><span class="dv">600</span>) </span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&nbsp;boxinteract</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="cell-16" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>export_plot_fastpages(boxinteract, <span class="st">'../_includes/boxinteract.html'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                             </code></pre>
+</div>
+</div>
+<p>{% include boxinteract.html %}</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/slamer59\.github\.io\/energies-domestique\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Powered by <a href="https://quarto.org/">Quarto</a></p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
