@@ -1,0 +1,6 @@
+---
+title: "Tags"
+listing: tags
+---
+
+Browse posts by tags.

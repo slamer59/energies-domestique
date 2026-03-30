@@ -1,0 +1,11 @@
+---
+title: "Énergies Domestique"
+---
+
+Welcome to my blog about home energy monitoring.
+
+## Recent Posts
+
+```{=html}
+<p>See <a href="/posts.html">all posts</a></p>
+```

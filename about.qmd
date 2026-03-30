@@ -1,0 +1,7 @@
+---
+title: "About"
+---
+
+This website is powered by **[Quarto](https://quarto.org/)**, an open-source scientific and technical publishing system.
+
+Previously powered by [fastpages](https://github.com/fastai/fastpages).

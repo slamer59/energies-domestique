@@ -1,0 +1,6 @@
+---
+title: "Blog"
+listing: posts
+---
+
+Posts about energies domestqiues.

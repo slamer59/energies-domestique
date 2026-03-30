@@ -1,9 +1,0 @@
-python-decouple
-influxdb
-influxdb-client
-holoviews[recommended]
-pandas
-panel
-hvplot
-plotly
-papermill
